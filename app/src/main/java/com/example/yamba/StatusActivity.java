@@ -1,17 +1,28 @@
 package com.example.yamba;
 
+import android.os.Bundle;
+import android.view.Menu;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.Button;
-
 public class StatusActivity extends AppCompatActivity {
-    Button tweet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status);
 
-        tweet = findViewById(R.id.buttonTweet);
+        if (savedInstanceState == null) {
+
+            StatusFragment fragment = new StatusFragment();
+            getFragmentManager().beginTransaction().add(R.id.fragment_status, fragment, fragment.getClass().getSimpleName()).commit();
+        }
+
+        setContentView(R.layout.new_activity_status);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }

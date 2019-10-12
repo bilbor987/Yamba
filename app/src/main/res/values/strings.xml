@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Yamba</string>
     <string name="button_tweet">Tweet</string>
-    <string name="text_hint">What\'s happening?</string>
+    <string name="hint_status">What\'s happening?</string>
 </resources>
