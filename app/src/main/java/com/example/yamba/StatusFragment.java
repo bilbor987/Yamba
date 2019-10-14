@@ -1,10 +1,15 @@
 package com.example.yamba;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +28,6 @@ import com.marakana.android.yamba.clientlib.YambaClientException;
 public class StatusFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "StatusFragment";
     private EditText editStatus;
-    private Button buttonTweet;
     private TextView textCount;
     private int defaultTextColor;
 
@@ -31,9 +35,9 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
 
-        editStatus = (EditText) view.findViewById(R.id.editStatus);
-        buttonTweet = (Button) view.findViewById(R.id.buttonTweet);
-        textCount = (TextView) view.findViewById(R.id.textCount);
+        editStatus = view.findViewById(R.id.editStatus);
+        Button buttonTweet = view.findViewById(R.id.buttonTweet);
+        textCount = view.findViewById(R.id.textCount);
 
         buttonTweet.setOnClickListener(this);
 
@@ -49,6 +53,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
 
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void afterTextChanged(Editable s){
                 int count = 140 - editStatus.length();
@@ -73,11 +78,28 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
     }
     private final class PostTask extends AsyncTask<String, Void, String> {
 
+        SharedPreferences prefs;
+
         @Override
         protected String doInBackground(String... params) {
-            YambaClient yambaCloud = new YambaClient("student", "password", "http://yamba.newcircle.com/api");
+
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(getActivity());
+            String username = prefs.getString("username", "");
+            String password = prefs.getString("password", "");
+
+            // Check that username and password are not empty
+            // If empty, Toast a message to set login info and bounce to
+            // SettingActivity
+            // Hint: TextUtils.
+            if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                getActivity().startActivity(
+                        new Intent(getActivity(), SettingsActivity.class));
+                return "Please update your username and password";
+            }
+            YambaClient cloud = new YambaClient("student", "password", "http://yamba.newcircle.com/api");
             try {
-                yambaCloud.postStatus(params[0]);
+                cloud.postStatus(params[0]);
                 return "Successfully posted";
             } catch (YambaClientException e) {
                 e.printStackTrace();

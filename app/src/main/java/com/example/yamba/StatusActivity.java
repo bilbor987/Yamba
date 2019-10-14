@@ -17,7 +17,7 @@ public class StatusActivity extends AppCompatActivity {
             getFragmentManager().beginTransaction().add(R.id.fragment_status, fragment, fragment.getClass().getSimpleName()).commit();
         }
 
-        setContentView(R.layout.new_activity_status);
+        //setContentView(R.layout.new_activity_status);
     }
 
     @Override
