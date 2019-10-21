@@ -24,21 +24,21 @@
         </intent-filter>
         </activity>
 
-
         <activity
-            android:name=".StatusActivity"
+            android:name="com.example.yamba.StatusActivity"
             android:label="@string/status_update">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.marakana.android.yamba.action.tweet" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".SettingsActivity"
             android:label="@string/action_settings" />
+
+        <service android:name=".RefreshService" />
 
 
 

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -21,14 +21,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_tweet:
                 startActivity(new Intent("com.example.yamba.action.tweet"));
                 return true;
 
-                default:
-                    return false;
+            case R.id.action_refresh:
+                startService(new Intent(this, RefreshService.class));
+                return true;
+
+            default:
+                return false;
         }
     }
 }
